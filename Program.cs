@@ -20,85 +20,96 @@ namespace Blog
             var connection = new SqlConnection(CONNECTION_STRING);
             connection.Open();
 
-            ReadUsers(connection);
-            ReadRoles(connection);
+            //ReadUsers(connection);
+            //ReadRoles(connection);
+            //ReadTags(connection);
             //ReadUser();
-            //CreateUser();
-            //UpdateUser();
-            //DeleteUser();
+            //CreateUser(connection);
+            //UpdateUser(connection);
+            //DeleteUser(connection, id);
+            //DelUser(connection);
 
             connection.Close();
         }
         public static void ReadUsers(SqlConnection connection)
         {
-            var repository = new UserRepository(connection);
-            var users = repository.Get();
+            var repository = new Repository<User>(connection);
+            var items = repository.Get();
 
-            foreach(var user in users)
-                Console.WriteLine(user.Name);
+            foreach(var item in items)
+                Console.WriteLine(item.Name);
         }
 
         public static void ReadRoles(SqlConnection connection)
         {
-            var repository = new RoleRepository(connection);
-            var roles = repository.Get();
+            var repository = new Repository<Role>(connection);
+            var items = repository.Get();
 
-            foreach(var role in roles)
-                Console.WriteLine(role.Name);
+            foreach(var item in items)
+                Console.WriteLine(item.Name);
         }
-        /*public static void ReadUser()
+
+         public static void ReadTags(SqlConnection connection)
         {
-            using(var connection = new SqlConnection(CONNECTION_STRING))
-            {
-                var user = connection.Get<User>(1);
-                Console.WriteLine(user.Name);
-            }
+            var repository = new Repository<Tag>(connection);
+            var items = repository.Get();
+
+            foreach(var item in items)
+                Console.WriteLine(item.Name);
         }
-        public static void CreateUser()
+
+        public static void CreateUser(SqlConnection connection)
         {
+            var repository = new Repository<User>(connection);
             var user = new User()
             {
-                Bio="Equipe Pinho",
-                Email="equipe@pinho.com",
+                Bio="Equipe Pinho", 
+                Email="time@pinho.com",
                 Image="https://...",
                 Name="Equipe Pinho",
-                PasswordHash="HASH2",
-                Slug="equipe-pinho"
-
+                PasswordHash="HASH3",
+                Slug="time-pinho"
             };
-            using(var connection = new SqlConnection(CONNECTION_STRING))
-            {
-                connection.Insert<User>(user);
-                Console.WriteLine("Cadastro realizado com sucesso");
-            }
-        }     
-        public static void UpdateUser()
+            repository.Create(user);
+            Console.WriteLine($"Usuário {user.Name} criado com sucesso!");
+        }
+
+        public static void UpdateUser(SqlConnection connection)
         {
+            var repository = new Repository<User>(connection);
             var user = new User()
             {
-                Id=2,
-                Bio="Equipe Artenir Pinho",
-                Email="equipe@pinho.com",
+                Id = 2007,
+                Bio="Teste Padrão", 
+                Email="teste@pinho.com",
                 Image="https://...",
-                Name="Equipe de Suporte Pinho",
-                PasswordHash="HASH2",
-                Slug="equipe-pinho"
-
+                Name="Teste Pinho",
+                PasswordHash="HASH3",
+                Slug="teste-pinho"
             };
-            using(var connection = new SqlConnection(CONNECTION_STRING))
-            {
-                connection.Update<User>(user);
-                Console.WriteLine("Atualização realizado com sucesso");
-            }
-        }  
-        public static void DeleteUser()
+            repository.Update(user);
+            Console.WriteLine($"usuário atualizado com sucesso: {user.Name}");
+        }
+
+        public static void DelUser(SqlConnection connection)
         {
-            using(var connection = new SqlConnection(CONNECTION_STRING))
+            var repository = new Repository<User>(connection);
+            var user = new User()
             {
-                var user = connection.Get<User>(2);
-                connection.Delete<User>(user);
-                Console.WriteLine("Exclusão realizada com sucesso");
-            }
-        }  */
+                Id = 2012
+            };
+            
+            repository.Delete(user);
+            Console.WriteLine("Item Deletado com sucesso");
+        }
+
+        public static void DeleteUser(SqlConnection connection, int id)
+        {
+            var repository = new Repository<User>(connection);
+            repository.Delete(id);
+
+            Console.WriteLine($"{id} item deletado");
+        }
+        
     }
 }
