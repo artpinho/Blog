@@ -1,6 +1,8 @@
 ﻿using System;
 using Blog.Models;
 using Blog.Repositories;
+using Blog.Screens;
+using Blog.Screens.TagScreens;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 
@@ -17,22 +19,53 @@ namespace Blog
                                                     TrustServerCertificate=True;";
         static void Main(string[] args)
         {
-            var connection = new SqlConnection(CONNECTION_STRING);
-            connection.Open();
+            Database.Connection = new SqlConnection(CONNECTION_STRING);
+            Database.Connection.Open();
 
-            //ReadUsers(connection);
+            MainMenu();
+
+            /*ReadUsers(connection);
             //ReadRoles(connection);
             //ReadTags(connection);
             //ReadUser();
-            CreateUser(connection);
+            //CreateUser(connection);
             //UpdateUser(connection);
             //DeleteUser(connection, id);
             //DelUser(connection);
-            //ReadWithRoles(connection);
+            ReadWithRoles(connection);*/
 
-            connection.Close();
+            Console.ReadKey();
+            Database.Connection.Close();
         }
-        public static void ReadUsers(SqlConnection connection)
+
+        private static void MainMenu()
+            {
+                Menu.Load();
+                /*Console.Clear();
+                Console.WriteLine("Meu Blog");
+                Console.WriteLine("----------------");
+                Console.WriteLine("O que deseja fazer?");
+                Console.WriteLine("");
+                Console.WriteLine("1 - Gestão de usuário");
+                Console.WriteLine("2 - Gestão de perfil");
+                Console.WriteLine("3 - Gestão de categoria");
+                Console.WriteLine("4 - Gestão de tag");
+                Console.WriteLine("5 - Vincular perfil/usuário");
+                Console.WriteLine("6 - Vincular post/tag");
+                Console.WriteLine("7 - Relatórios");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                var option = short.Parse(Console.ReadLine()!);
+
+                switch (option)
+                {
+                    case 4:
+                        MenuTagScreen.Load();
+                        break;
+                    default: Load(); break;
+                }*/
+            }
+        /*public static void ReadUsers(SqlConnection connection)
         {
             var repository = new Repository<User>(connection);
             var items = repository.Get();
@@ -124,7 +157,7 @@ namespace Blog
                     
             }
         }
-    }
+    }*/
 
-        
+    }       
 }
